@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
-import { Search, UserCheck } from 'lucide-react';
+import { Search, UserCheck, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Tipagem: O "molde" do Convidado que vem da sua API
 interface Convidado {
@@ -25,6 +26,8 @@ export function Recepcao() {
     }
   };
 
+  const navigate = useNavigate()    
+
   useEffect(() => {
     buscarConvidados();
   }, []);
@@ -39,6 +42,11 @@ export function Recepcao() {
     }
   };
 
+  const fazerLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   // 3. Filtrar a lista pela barra de pesquisa
   const listaFiltrada = convidados.filter(convidado => {
     const nomeCompleto = `${convidado.nome} ${convidado.sobrenome}`.toLowerCase();
@@ -51,6 +59,14 @@ export function Recepcao() {
         <header className="mb-6 mt-4">
           <h1 className="text-3xl font-bold text-gray-800">Check-in</h1>
           <p className="text-gray-500">Controle de acesso do evento</p>
+          <button 
+            onClick={fazerLogout}
+            className="flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors"
+            title="Sair do Sistema"
+          >
+            <LogOut size={20} />
+            <span className="hidden sm:inline">Sair</span> {/* O texto 'Sair' só aparece em ecrãs um pouco maiores, em telemóveis pequenos fica só o ícone para poupar espaço */}
+          </button>
         </header>
         
         {/* Barra de Pesquisa */}

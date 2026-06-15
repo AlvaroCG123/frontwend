@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { api } from '../services/api';
-import { Users, CheckCircle, Clock, Trash2, Pencil, X, Printer, Loader } from 'lucide-react';
+import { Users, CheckCircle, Clock, Trash2, Pencil, X, Printer, Loader, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Convidado {
   id: number;
@@ -39,6 +40,13 @@ export function Dashboard() {
       console.error("Erro ao carregar convidados", error);
     }
   };
+
+  const navigate = useNavigate()
+
+  const fazerLogout = ()=>{
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
 
   useEffect(() => {
     carregarConvidados();
@@ -118,6 +126,14 @@ export function Dashboard() {
             <Printer size={20} />
             Exportar Relatório
           </button>
+
+          <button 
+              onClick={fazerLogout}
+              className="flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+            >
+              <LogOut size={20} />
+              Sair
+            </button>
         </header>
 
         {/* CARDS */}
